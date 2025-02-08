@@ -1,4 +1,4 @@
-export default __response = (payload, status) => {
+const __response = (payload, status) => {
     const success = [200,201].includes(status);
     let response = {
         success,
@@ -11,3 +11,4 @@ export default __response = (payload, status) => {
     }
     return response;
 }
+export default __response;
