@@ -26,7 +26,8 @@ export default class Product {
     }
 
     setID(id = null) {
-        this.id = id === null ? (Product.items.length + 1) : id;
+        const products = Product.getAll();
+        this.id = id === null ? (products.length + 1) : id;
         this.id = isNaN(this.id) ? parseInt(this.id.replaceAll(/[^0-9]/g, "")) : this.id;
     }
 
@@ -70,11 +71,12 @@ export default class Product {
         const products = Product.getAll();
         let index = products.findIndex(element => element.id === this.id);
         if(index < 0 ){
-            Product.items.push(this);
+            products.push(this.toArray());
         }else{
-            Product.items[index] = this;
+            products[index] = this.toArray();
         }
-        Product.saveAll();
+        fs.writeFileSync(Product.data_path, JSON.stringify(products));
+
         return Product.isProduct(Product.findByID(this.id));
     }
 
@@ -85,49 +87,55 @@ export default class Product {
             // does not exists, so is the same as deleted
             return true;
         }
-        Product.items.splice(index, 1);
-        Product.saveAll();
-        return Product.items.findIndex(element => element.id === this.id) < 0;
+        products.splice(index, 1);
+        fs.writeFileSync(Product.data_path, JSON.stringify(products));
+        return !Product.isProduct(Product.findByID(this.id));
     }
-    
-    static saveAll(){
-        fs.writeFileSync(Product.data_path, JSON.stringify(Product.items));
+
+    toArray(){
+        return {
+            id: this.id,
+            title: this.title,
+            description: this.description,
+            code: this.code,
+            price: this.price,
+            status: this.status,
+            stock: this.stock,
+            category: this.category,
+            thumbnail: this.thumbnail
+        }
     }
 
     static getAll(){
-        if(Product.items.length === 0){
-            if(!fs.existsSync(Product.data_path)){
-                fs.writeFileSync(Product.data_path, JSON.stringify([]));
-            }
-            Product.items = JSON.parse(fs.readFileSync(Product.data_path));
-            for(let z = 0 ; z < Product.items.length ; z++){
-                const product = Product.items[z];
-                Product.items[z] = new Product(
-                    product.id,
-                    product.title,
-                    product.description,
-                    product.code, 
-                    product.price,
-                    product.status,
-                    product.stock,
-                    product.category,
-                    product.thumbnail
-                );
-            }
+        if(!fs.existsSync(Product.data_path)){
+            fs.writeFileSync(Product.data_path, JSON.stringify([]));
         }
-        return Product.items;
+       return JSON.parse(fs.readFileSync(Product.data_path));
     }
 
+    static arrayToModel(productArray){
+        return new Product(
+            productArray.id,
+            productArray.title,
+            productArray.description,
+            productArray.code,
+            productArray.price,
+            productArray.status,
+            productArray.stock,
+            productArray.category,
+            productArray.thumbnail
+        );
+    }
     static findByID(id){
         const products = Product.getAll();
         let index = products.findIndex(element => element.id == id);
-        return index < 0 ? null : products[index];
+        return index < 0 ? null : Product.arrayToModel(products[index]);
     }
 
     static findByCode(code){
         const products = Product.getAll();
         let index = products.findIndex(element => element.code == code);
-        return index < 0 ? null : products[index];
+        return index < 0 ? null : Product.arrayToModel(products[index]);
     }
 
     static isProduct(object){

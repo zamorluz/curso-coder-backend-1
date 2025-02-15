@@ -39,6 +39,10 @@ productRouter.put("/", productAddMiddleware, (request, response) => {
     );
     const success = product.save(),
         httpCode = success ? 201 : 500;
+    if(success){
+        const io = request.app.get('socketio');
+        io.emit("product.update", product);
+    }
     return response.status(httpCode).send(__response(product, httpCode));
 });
 productRouter.patch("/:pid", productEditMiddleware, (request, response) => {
@@ -65,6 +69,10 @@ productRouter.patch("/:pid", productEditMiddleware, (request, response) => {
     product.setStock(stock);
     const success = product.save(),
         httpCode = success ? 200 : 500;
+    if(success){
+        const io = request.app.get('socketio');
+        io.emit("product.update", product);
+    }
     return response.status(httpCode).send(__response(product, httpCode));
 });
 productRouter.delete("/:pid", productDeleteMiddleware, (request, response) => {
@@ -74,6 +82,11 @@ productRouter.delete("/:pid", productDeleteMiddleware, (request, response) => {
     let product = Product.findByID(request.params.pid);
     const success = product.delete(),
         httpCode = success ? 200 : 500;
+    
+    if(success){
+        const io = request.app.get('socketio');
+        io.emit("product.delete", product);
+    }
     return response.status(httpCode).send(__response({
         deleted: success
     }, httpCode));

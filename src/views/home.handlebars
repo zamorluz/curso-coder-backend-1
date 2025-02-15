@@ -1,0 +1,21 @@
+<div id="products-static">
+    <h1>Participants</h1>
+    <ul>
+    {{#each products}}
+        {{#if this.status}}
+        <li>
+            <ul>
+                <li>Title: {{this.title}}</li>
+                <li>description: {{this.description}}</li>
+                <li>code: {{this.code}}</li>
+                <li>Price: {{this.price}}</li>
+                <li>Stock: {{this.stock}}</li>
+                {{#if this.thumbnail}}
+                <li>Thumbnail:<br><img src="{{this.thumbnail}}" alt="product-image"></li>
+                {{/if}}
+            </ul>
+        </li>
+        {{/if}}
+    {{/each}}
+    </ul>
+</div>
