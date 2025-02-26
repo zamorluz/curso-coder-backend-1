@@ -1,21 +1,57 @@
-<div id="products-static">
-    <h1>Participants</h1>
-    <ul>
-    {{#each products}}
-        {{#if this.status}}
-        <li>
-            <ul>
-                <li>Title: {{this.title}}</li>
-                <li>description: {{this.description}}</li>
-                <li>code: {{this.code}}</li>
-                <li>Price: {{this.price}}</li>
-                <li>Stock: {{this.stock}}</li>
-                {{#if this.thumbnail}}
-                <li>Thumbnail:<br><img src="{{this.thumbnail}}" alt="product-image"></li>
-                {{/if}}
-            </ul>
-        </li>
-        {{/if}}
+
+<div class="container">
+    <h1 class="text-center">Products</h1>
+    <div class="row"  id="products-holder">
+    {{#each products.docs}}
+        <div class="col-4">
+            <div class="rounded bg-dark text-light m-3 p-0 overflow-hidden border border-black" id="product-{{this._id}}">
+                <div class="js-product js-product-image rounded-top p-0" style="background-image: url('{{this.thumbnail}}'); height: 200px; background-size: cover; background-position: center;"  data-code="{{this.code}}" data-pid="{{this._id}}"></div>
+                <div class="js-product js-product-title text-uppercase bg-dark p-3" data-code="{{this.code}}" data-pid="{{this._id}}">{{this.title}}</div>
+                <div class="bg-black">
+                    <div class="js-product js-product-description p-3" data-code="{{this.code}}" data-pid="{{this._id}}">
+                        Description:<br> {{this.description}}
+                    </div>
+                    <div class="row p-0">
+                        <div class="col-6 px-0">
+                            <div class="product-stock py-3 px-0 text-center bg-primary w-100  h-100" role="button">
+                                <i class="fa-solid fa-boxes-stacked"></i> 
+                                <input class="text-center js-cart-quantity" type="number" max="{{this.stock}}" min="1" value="1" step="1" style="width: 50px;" data-pid="{{this._id}}"> / <span class="js-cart-qty" data-pid="{{this._id}}">{{this.stock}}</span> Units
+                            </div>
+                        </div>
+                        <div class="col-6 px-0">
+                            <div class="js-cart-add col-6 py-3 px-0 text-center bg-secondary w-100 h-100" role="button" data-pid="{{this._id}}">
+                                <i class="fa-solid fa-cart-shopping "></i> <span class="js-cart-price" data-pid="{{this._id}}">{{this.price}}</span> USD/unit
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {{/each}}
-    </ul>
+    </div>
+    <nav class="text-center" aria-label="Page navigation example">
+        <ul class="pagination justify-content-center js-product-pagination">
+            <li class="page-item {{#unless products.hasPrevPage}}disabled{{/unless}}">
+                <a class="page-link" href="?page={{products.prevPage}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            {{#each pages}}
+            <li class="page-item {{#if this.current}}active{{/if}}"><a class="page-link" href="?page={{this.page}}">{{this.page}}</a></li>
+            {{/each}}
+            <li class="page-item {{#unless products.nextPage}}disabled{{/unless}}">
+                <a class="page-link" href="?page={{products.nextPage}}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="js-cart-toggler position-fixed bottom-0 end-0 bg-dark z-3 text-light p-3" id="cart-opener" role="button">Open cart</div>
+<div class="border-start w-50 h-100 position-fixed top-0 end-0 bg-black z-3 d-none" id="cart-window">
+    <h1 class="text-white text-center">Cart</h1>
+    <div class="js-cart-items p-3"></div>
+    <div class="js-cart-toggler position-absolute bottom-0 end-0 bg-dark z-3 text-light p-3 w-100 text-center" id="cart-opener" role="button">Close cart</div>
 </div>

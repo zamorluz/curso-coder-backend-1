@@ -1,0 +1,21 @@
+
+<div class="container">
+    <form class="product-form" id="product-add-form">
+        <input type="text" class="w-100 mb-3" name="title" placeholder="Product Name" required>
+        <input type="text" class="w-100 mb-3" name="code" placeholder="Product code" required>
+        <input type="text" class="w-100 mb-3" name="category" placeholder="Product category" required>
+        <input type="number" class="w-100 mb-3" name="price" placeholder="Product Price" required>
+        <input type="number" class="w-100 mb-3" name="stock" placeholder="Product stock" required>
+        <input type="url" class="w-100 mb-3" name="thumbnail" placeholder="Product thumbnail" >
+        <textarea name="description" class="w-100 mb-3" placeholder="Description" required></textarea>
+        <button type="submit" class=" w-100 btn btn-primary">Add Product</button>
+    </form>
+    <div id="products-list-holder" data-page="1"></div>
+    <div class="btn btn-primary btn-large rounded" id="products-list-loader">Cargar Mas</div>
+</div>
+<div class="js-cart-toggler position-fixed bottom-0 end-0 bg-dark z-3 text-light p-3" id="cart-opener" role="button">Open cart</div>
+<div class="border-start w-50 h-100 position-fixed top-0 end-0 bg-black z-3 d-none" id="cart-window">
+    <h1 class="text-white text-center">Cart</h1>
+    <div class="js-cart-items p-3"></div>
+    <div class="js-cart-toggler position-absolute bottom-0 end-0 bg-dark z-3 text-light p-3 w-100 text-center" id="cart-opener" role="button">Close cart</div>
+</div>

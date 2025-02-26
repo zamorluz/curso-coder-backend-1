@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="col-4 rounded bg-dark text-light m-3 p-0 overflow-hidden border border-black" id="product-{{this._id}}">
+            <div class="js-product js-product-image rounded-top p-0" style="background-image: url('{{this.thumbnail}}'); height: 200px; background-size: cover; background-position: center;"  data-code="{{this.code}}" data-pid="{{this.code}}"></div>
+            <div class="js-product js-product-title text-uppercase bg-dark p-3" data-pid="{{this.code}}" data-code="{{this.code}}">{{this.title}}</div>
+            <div class="bg-black">
+                <div class="js-product js-product-description p-3" data-code="{{this.code}}" data-pid="{{this.code}}">
+                    Description:<br> {{this.description}}
+                </div>
+                <div class="row p-0">
+                    <div class="col-6 px-0">
+                        <div class="product-stock py-3 px-0 text-center bg-primary w-100  h-100" role="button">
+                            <i class="fa-solid fa-boxes-stacked"></i> 
+                            <input class="text-center js-cart-quantity" type="number" max="{{this.stock}}" min="1" value="1" step="1" style="width: 50px;"> / <span class="js-cart-qty">{{this.stock}}</span> Units
+                        </div>
+                    </div>
+                    <div class="col-6 px-0">
+                        <div class="js-cart-add col-6 py-3 px-0 text-center bg-secondary w-100 h-100" role="button" data-pid="{{this._id}}">
+                            <i class="fa-solid fa-cart-shopping "></i> <span class="js-cart-price">{{this.price}}</span> USD/unit
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<div class="js-cart-toggler position-fixed bottom-0 end-0 bg-dark z-3 text-light p-3" id="cart-opener" role="button">Open cart</div>
+<div class="border-start w-50 h-100 position-fixed top-0 end-0 bg-black z-3 d-none" id="cart-window">
+    <h1 class="text-white text-center">Cart</h1>
+    <div class="js-cart-items p-3"></div>
+    <div class="js-cart-toggler position-absolute bottom-0 end-0 bg-dark z-3 text-light p-3 w-100 text-center" id="cart-opener" role="button">Close cart</div>
+</div>
